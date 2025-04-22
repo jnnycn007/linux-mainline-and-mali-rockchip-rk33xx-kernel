@@ -15,7 +15,7 @@
 #include "rk356x-box-cpu-opp.dtsi"
 
 / {
-	model = "Rockchip RK3566 BOX DEMO Board";
+	model = "Tanix TX66 Box";
 	compatible = "rockchip,rk3566-box-demo", "rockchip,rk3566";
 
 	aliases {
@@ -147,12 +147,12 @@
 		vin-supply = <&vcc5v0_sys>;
 	};
 
-	vcc5v0_usb2_otg: regulator-vcc5v0-usb2-otg {
+	vcc5v0_usb_otg: regulator-vcc5v0-usb-otg {
 		compatible = "regulator-fixed";
 		enable-active-high;
 		gpio = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&vcc5v0_usb2_otg_en>;
+		pinctrl-0 = <&vcc5v0_usb_otg_en>;
 		regulator-name = "vcc5v0_usb_otg";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
@@ -262,9 +262,9 @@
 };
 
 &mdio1 {
-	rgmii_phy1: ethernet-phy@1 {
+	rgmii_phy1: ethernet-phy@0 {
 		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <0x1>;
+		reg = <0x0>;
 	};
 };
 
@@ -339,7 +339,7 @@
 			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
-		vcc5v0_usb2_otg_en: vcc5v0_usb2_otg_en {
+		vcc5v0_usb_otg_en: vcc5v0_usb_otg_en {
 			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
@@ -490,35 +490,17 @@
 	status = "okay";
 };
 
-&usb2phy0_host {
-	phy-supply = <&vcc5v0_usb_host>;
-	status = "okay";
-};
-
-&usb2phy0_otg {
-	phy-supply = <&vcc5v0_usb2_otg>;
-	status = "okay";
-};
-
-&usb2phy1_host {
-	phy-supply = <&vcc5v0_usb_host>;
-	status = "okay";
-};
-
-&usb2phy1_otg {
-	phy-supply = <&vcc5v0_usb_host>;
-	status = "okay";
-};
-
-&usb2phy1 {
-	status = "okay";
-};
-
 &usb_host0_ehci {
 	status = "okay";
 };
 
 &usb_host0_ohci {
+	status = "okay";
+};
+
+&usb_host0_xhci {
+	extcon = <&usb2phy0>;
+	dr_mode = "host";
 	status = "okay";
 };
 
@@ -531,5 +513,34 @@
 };
 
 &usb_host1_xhci {
+	dr_mode = "host";
+	status = "okay";
+};
+
+&usb2phy0 {
+	status = "okay";
+};
+
+&usb2phy0_host {
+	phy-supply = <&vcc5v0_usb_host>;
+	status = "okay";
+};
+
+&usb2phy0_otg {
+	phy-supply = <&vcc5v0_usb_otg>;
+	status = "okay";
+};
+
+&usb2phy1 {
+	status = "okay";
+};
+
+&usb2phy1_host {
+	phy-supply = <&vcc5v0_usb_host>;
+	status = "okay";
+};
+
+&usb2phy1_otg {
+	phy-supply = <&vcc5v0_usb_host>;
 	status = "okay";
 };
